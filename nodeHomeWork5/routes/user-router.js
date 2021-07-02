@@ -7,12 +7,21 @@ const {
 
 router.get('/', userController.getAllUsers);
 
-router.post('/', checkUserValidity, isEmailBusy, userController.createUser);
+router.post('/',
+    checkUserValidity,
+    isEmailBusy,
+    userController.createUser);
 
-router.get('/:userId', userIsNotExist, userController.getUserById);
+router.get('/:userId',
+    userIsNotExist,
+    userController.getUserById);
 
-router.delete('/:userId', userIsNotExist, userController.deleteUser);
+router.delete('/:userId',
+    userIsNotExist,
+    userController.deleteUser);
 
-router.patch('/:userId', userIsNotExist, userController.updateUser);
+router.patch('/:userId',
+    userIsNotExist,
+    userController.updateUser);
 
 module.exports = router;

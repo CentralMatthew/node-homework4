@@ -31,7 +31,11 @@ module.exports = {
             const { error } = authValidator.logIn.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(statusCode.BAD_REQUEST, error.details[0].message, INVALID_KEY_VALUE.code);
+                throw new ErrorHandler(
+                    statusCode.BAD_REQUEST,
+                    error.details[0].message,
+                    INVALID_KEY_VALUE.code
+                );
             }
 
             next();
