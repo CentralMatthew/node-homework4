@@ -15,8 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
-app.use(_handleErrors);
 app.use('*', _notFoundHandler);
+app.use(_handleErrors);
 
 app.listen(PORT, () => {
     console.log(`App listen ${PORT}`);

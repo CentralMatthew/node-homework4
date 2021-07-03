@@ -30,7 +30,7 @@ module.exports = {
     isEmailBusy: async (req, res, next) => {
         try {
             const { email } = req.body;
-            const [user] = await Users.find({ email });
+            const user = await Users.findOne({ email });
 
             if (user) {
                 throw new ErrorHandler(

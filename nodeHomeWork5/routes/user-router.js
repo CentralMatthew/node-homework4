@@ -21,6 +21,7 @@ router.delete('/:userId',
     userController.deleteUser);
 
 router.patch('/:userId',
+    checkUserValidity,
     userIsNotExist,
     userController.updateUser);
 
