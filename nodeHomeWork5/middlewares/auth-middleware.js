@@ -1,6 +1,7 @@
 const { statusCode } = require('../constants');
 const { Users } = require('../dataBase');
 const { ErrorHandler } = require('../errors');
+const { headersConstants: { AUTHORIZATION } } = require('../constants');
 const { INVALID_KEY_VALUE, WRONG_EMAIL_OR_PASSWORD } = require('../errors/error-message');
 const { authValidator } = require('../validators');
 

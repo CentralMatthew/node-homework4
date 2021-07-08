@@ -1,2 +1,5 @@
 # Project exclude paths
 /node_modules/
+nodeHomeWork6/.env
+.idea
+package-lock.json
