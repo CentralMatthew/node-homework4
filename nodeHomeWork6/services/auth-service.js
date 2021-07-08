@@ -25,7 +25,6 @@ module.exports = {
 
     const verify = await verifyPromisify(token, secretWord);
 
-    console.log(verify);
   }
 
 };

@@ -47,14 +47,7 @@ module.exports = {
       const tokenPair = authService.generateTokenPair();
 
       await OAuth.findOneAndUpdate({ refreshToken }, { ...tokenPair });
-      console.log(tokenPair);
 
-    /*  await OAuth.create({
-        access_token: tokenPair.accessToken,
-        refresh_token: tokenPair.refreshToken,
-        user: _id
-      });
-*/
       res.json({
         ...tokenPair,
         user: req.user
