@@ -13,6 +13,7 @@ const { UPDATED } = require('../constants/successResults');
 const { passwordHasher, mailService, userService } = require('../services');
 
 const mkDirPromise = promisify(fs.mkdir);
+const rmDirPromise = promisify(fs.rmdir);
 
 module.exports = {
   getAllUsers: async (req, res, next) => {
@@ -68,13 +69,15 @@ module.exports = {
   deleteUser: async (req, res, next) => {
     try {
       const { userId } = req.params;
-      const { email, name } = req.user;
+      const { email, name, } = req.user;
 
       await Users.findByIdAndRemove(userId);
 
       await mailService.sendMail(email, DELETE, { userName: name });
 
-      res.status(statusCode.NO_CONTENT);
+      await _dirRemover(userId, 'users');
+
+      res.status(statusCode.NO_CONTENT).end();
     } catch (e) {
       next(e);
     }
@@ -98,6 +101,7 @@ module.exports = {
   getAllUserPhotos: (req, res, next) => {
     try {
       const { gallery } = req.user;
+
       res.status(statusCode.UPDATED).json(gallery);
     } catch (e) {
       next(e);
@@ -107,6 +111,7 @@ module.exports = {
   getUserDocuments: (req, res, next) => {
     try {
       const { documents } = req.user;
+
       res.status(statusCode.UPDATED).json(documents);
     } catch (e) {
       next(e);
@@ -120,6 +125,7 @@ module.exports = {
 
       if (avatar) {
         const { finalPath, dirPath } = await _dirBuilder('photos', avatar.name, _id, 'users');
+
         await avatar.mv(finalPath);
 
         await Users.updateOne({ _id }, { $set: { avatar: dirPath } });
@@ -139,6 +145,7 @@ module.exports = {
 
       if (photo) {
         const { finalPath, dirPath } = await _dirBuilder('photos', photo.name, _id, 'users');
+
         await photo.mv(finalPath);
 
         await Users.updateOne({ _id }, { $push: { gallery: dirPath } });
@@ -170,7 +177,6 @@ module.exports = {
 
 };
 
-
 async function _dirBuilder(dirName, fileName, itemdId, itemType) {
   const pathWithoutStatic = path.join(itemType, itemdId.toString(), dirName);
   const uploadPath = path.join(process.cwd(), 'static', pathWithoutStatic);
@@ -185,4 +191,10 @@ async function _dirBuilder(dirName, fileName, itemdId, itemType) {
     finalPath,
     dirPath: path.join(pathWithoutStatic, newFileName)
   };
+}
+
+async function _dirRemover(itemdId, itemType) {
+  const pathWithoutStatic = path.join(itemType, itemdId.toString());
+  const uploadPath = path.join(process.cwd(), 'static', pathWithoutStatic);
+  await rmDirPromise(uploadPath, { recursive: true });
 }

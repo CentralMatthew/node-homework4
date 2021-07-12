@@ -48,5 +48,5 @@ function _notFoundHandler(err, req, res, next) {
 }
 
 function _moongoseConnector() {
-  mongoose.connect(dataBase, { useUnifiedTopology: true, useNewUrlParser: true });
+  mongoose.connect(dataBase, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false });
 }
