@@ -70,15 +70,4 @@ module.exports = {
     }
   },
 
-  checkDocument: (req, res, next) => {
-    try {
-      if (req.documents.length > 1) {
-        throw new ErrorHandler(statusCode.FORBIDDEN, ONLY_ONE_AVATAR_FOR_USER.message, ONLY_ONE_AVATAR_FOR_USER.code);
-      }
-      next();
-    } catch (e) {
-      next(e);
-    }
-  },
-
 };
