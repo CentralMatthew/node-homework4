@@ -1,5 +1,6 @@
 # Project exclude paths
 /node_modules/
-nodeHomeWork8/.env
+test_task/.env
 .idea
 package-lock.json
+test_task/static
