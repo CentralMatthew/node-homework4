@@ -140,15 +140,21 @@ module.exports = {
 
   addPhotoToGallery: async (req, res, next) => {
     try {
-      const [photo] = req.photos;
+      const photo = req.photos;
       const { _id } = req.user;
 
-      if (photo) {
-        const { finalPath, dirPath } = await _dirBuilder('photos', photo.name, _id, 'users');
+      const photoArr = [];
 
-        await photo.mv(finalPath);
+      if (photo.length) {
+        for await (const image of photo) {
+          const { finalPath, dirPath } = await _dirBuilder('photos', image.name, _id, 'users');
 
-        await Users.updateOne({ _id }, { $push: { gallery: dirPath } });
+          await image.mv(finalPath);
+
+          photoArr.push(dirPath);
+        }
+
+        await Users.updateOne({ _id }, { $push: { gallery: { $each: photoArr } } });
       }
 
       res.status(statusCode.UPDATED).json(SUCCESS_ADDED_PHOTO);

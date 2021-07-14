@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const { unknownErrors, statusCode } = require('./constants');
 const { dataBase } = require('./constants/dbUrl');
@@ -20,6 +21,7 @@ app.use(_handleErrors);
 
 app.listen(PORT, () => {
     console.log(`App listen ${PORT}`);
+    console.log(process);
 });
 
 // eslint-disable-next-line no-unused-vars
